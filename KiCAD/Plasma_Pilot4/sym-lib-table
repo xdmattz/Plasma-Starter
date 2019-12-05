@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "lt1129cst-5")(type "Legacy")(uri "${KIPRJMOD}/lt1129cst-5.lib")(options "")(descr ""))
+  (lib (name "Plasma_Pilot4-rescue")(type "Legacy")(uri "${KIPRJMOD}/Plasma_Pilot4-rescue.lib")(options "")(descr ""))
+)
