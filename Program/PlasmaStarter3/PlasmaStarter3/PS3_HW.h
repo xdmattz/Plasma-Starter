@@ -13,14 +13,22 @@
 
 // Port A
 // 
-#define I_SENSE	0		// Pilot current sense input voltage - ADC0 input
-#define I_LIMIT	1		// Pilot current limit control. low = normal operation, high = pilot arc mode
+//#define I_SENSE	0		// Pilot current sense input voltage - ADC0 input
+//#define I_LIMIT	1		// Pilot current limit control. low = normal operation, high = pilot arc mode
 #define AUX_OUT 2		// Auxilary control output - gate drive, 1 = ON, 0 = OFF
 #define TP_6	4		// Test Point - ADC3	
+#define SEL_A	4
+#define SEL_B	5
 #define TP_7	5		// Test Point - ADC4	
 #define TP_8	6		// Test Point - ADC5	
 #define TP_9	7		// Test Point - ADC6	
 
+// Plasma 3 differences
+// Port A
+#define V_SENSE		0
+#define I_SENSE		1
+#define HALL_SENSE	2
+#define BYPASS_CAP	3
 
 
 // Port B
@@ -28,7 +36,8 @@
 #define SPI_MISO	1
 #define SPI_CLK		2
 #define ISO_PWM		3	// Control for the isolated gate drive power supply. On PWM OC1B
-#define ISO_SW		4	// Isolated switch control signal
+// #define ISO_SW		4	// Isolated switch control signal
+#define I_LIMIT		4
 #define PT_MODE		5	// Plasma / Tig mode input - needs pullup. High = plasma mode.	- INPUT
 #define START_SW	6	// Start switch - needs pullup. rising edge on switch closure,	-INPUT
 #define PB7_RESET	7
@@ -66,20 +75,28 @@
 #define SET_SW_FLAG(X) SW_FLAG |= _BV(X)
 #define CLR_SW_FLAG(X) SW_FLAG &= ~(_BV(X))
 
-#define CUR_LIMIT_ON() PORTA |= _BV(I_LIMIT)
-#define CUR_LIMIT_OFF() PORTA &= ~(_BV(I_LIMIT))
+// PLASMA 3 changes these to port B
+//#define CUR_LIMIT_ON() PORTA |= _BV(I_LIMIT)
+//#define CUR_LIMIT_OFF() PORTA &= ~(_BV(I_LIMIT))
+//
+//
+//#define I_LIMIT_ON() PORTA |= _BV(I_LIMIT)	// macro that sets the I_LIMIT to ON
+//#define I_LIMIT_OFF() PORTA &= ~(_BV(I_LIMIT)) // macro that clears the I_LIMIT pin
 
-#define I_LIMIT_ON() PORTA |= _BV(I_LIMIT)	// macro that sets the I_LIMIT to ON
-#define I_LIMIT_OFF() PORTA &= ~(_BV(I_LIMIT)) // macro that clears the I_LIMIT pin
+#define CUR_LIMIT_ON() PORTB |= _BV(I_LIMIT)
+#define CUR_LIMIT_OFF() PORTB &= ~(_BV(I_LIMIT))
+
+#define I_LIMIT_ON() PORTB |= _BV(I_LIMIT)	// macro that sets the I_LIMIT to ON
+#define I_LIMIT_OFF() PORTB &= ~(_BV(I_LIMIT)) // macro that clears the I_LIMIT pin
 
 // ADC variables
 #define ADC_VCC_REF		0
 #define ADC_ADLR		0x20
-#define ADC_PILOT_CUR	0x00	// includes ADLR bit
+// #define ADC_PILOT_CUR	0x00	// includes ADLR bit
 
 
 // Plasma 3 board
-//#define ADC_PILOT_CUR	0x21
+#define ADC_PILOT_CUR	0x01
 
 #define ADC_TORC_VOLT	0x00
 #define ADC_TEMP1		0x01
@@ -100,7 +117,7 @@
 // used for a very short delay
 
 // Timer1 stuff
-#define T1_INTERVAL 25
+#define T1_INTERVAL 28
 #define T1_PULSEWIDTH 6
 
 // Timer0 stuff

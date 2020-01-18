@@ -86,10 +86,13 @@ void Init(void)
 	
 	// Setup the port pins
 	PORTA = 0x00;		//Initial pin conditions
-	PORTB = 0x00; // no pullups  | _BV(START_SW) | _BV(PT_MODE);		// enable pullup resistors on START_SW and P_MODE
+	PORTB = 0x00; // no pullups  | _BV(START_SW) | _BV(PT_MODE);		// enable pullup resistors on START_SW and P_MODE?
 	// port directions
-	DDRA = 0x00 | _BV(I_LIMIT) | _BV(AUX_OUT) | _BV(TP_6)| _BV(TP_7) | _BV(TP_8) | _BV(TP_9);		// port directions
-	DDRB = 0x00 | _BV(ISO_PWM) | _BV(ISO_SW);		
+//	DDRA = 0x00 | _BV(I_LIMIT) | _BV(AUX_OUT) | _BV(TP_6)| _BV(TP_7) | _BV(TP_8) | _BV(TP_9);		// port directions
+//	DDRB = 0x00 | _BV(ISO_PWM) | _BV(ISO_SW);	
+// Changed for PLAMSA 3 PCB
+	DDRA = 0x00 | _BV(TP_6)| _BV(TP_7) | _BV(TP_8) | _BV(TP_9);	// all inputs? except for test points	
+	DDRB = 0x00 | _BV(ISO_PWM) | _BV(I_LIMIT);
 
 	// Clocks are setup with the fuses at programming time
 	// clock setup to 8 MHz
@@ -113,7 +116,6 @@ void Init(void)
 	TIMSK = 0;	// no interrupts for now
 //	TIMSK = _BV(TOIE1);	// enable interrupt 1
 
-
 	// setup timer0 
 	// not currently using this ???
 //	T0_HIGH_TIME = 0xffff - T0_MIN; 
@@ -121,8 +123,6 @@ void Init(void)
 	
 //	TCNT0H = (uint8_t) (T0_LOW_TIME >> 8);
 //	TCNT0L = (uint8_t) (T0_LOW_TIME);	
-	
-
 
 	TCNT0H = (uint8_t) (T0_RELOAD >> 8);	// initial count value
 	TCNT0L = (uint8_t) (T0_RELOAD);
@@ -136,9 +136,6 @@ void Init(void)
 // 16 bit timer mode
 	TCCR0A = _BV(TCW0);		// timer 16 bit mode
 	TCCR0B = _BV(CS00);		// start, timer prescaler = 1
-
-
-	
 	
 	// setup the ADC 
 	// reference at VCC - 5.0V
@@ -173,9 +170,9 @@ void ProcessADC(void)
 	// ADC value is multiplied by 7 - this gives a 5% to 95% duty cycle for the full ADC range
 	uint16_t ADCX;
 	// ADCX = PilotCurrent * 7;
-//	ADCX = PilotCurrent_Flt * 7;
-//	T0_PWM = (T0_RELOAD + T0_MIN) + ADCX;
-	T0_PWM = (T0_RELOAD + T0_MIN) + State_Indicator;
+	ADCX = TorchVoltage_Flt * 7;
+	T0_PWM = (T0_RELOAD + T0_MIN) + ADCX;
+//	T0_PWM = (T0_RELOAD + T0_MIN) + State_Indicator;
 	OCR0B = (uint8_t)(T0_PWM >> 8);
 	OCR0A = (uint8_t)(T0_PWM);	// update Timer0 compare registers
 
@@ -228,7 +225,7 @@ void Waiting_for_Start(void)
 	if(MS_Time > MS_Count10)
 	{
 		//CLR_FLAGS(TIMER0_DONE);
-		TOGGLE_A(TP_9);
+		//TOGGLE_A(TP_9);
 		MS_Count10 = MS_Time + SWITCH_DB_DLY;	// check ever X ms 
 
 		Start_DB = Start_DB << 1;
@@ -237,7 +234,7 @@ void Waiting_for_Start(void)
 			Start_DB |= 1;	// if the start switch is high then put 1 in the LSB
 		}
 
-		if((Start_DB & 0x0f) == 0x0f)	// four switch hi in a row	
+		if((Start_DB & 0x3f) == 0x3f)	// five switch hi in a row	
 		{
 			// SET_SW_FLAG(START_SW_ST);
 			PWM_ON();
@@ -347,12 +344,18 @@ void CheckSWLow(void)
 {
 	if(MS_Time > MS_Count10)
 	{	
-		if(START_SW_LOW)
+		MS_Count10 = MS_Time + SWITCH_DB_DLY;
+		Start_DB = Start_DB << 1;
+		if(START_SW_HI)
+		{
+			Start_DB |= 1;
+		}
+		if((Start_DB & 0x0f) == 0x0)	// 4 lows in a row.
 		{
 			// CLR_SW_FLAG(START_SW_ST);	// set the switch state
 			PWM_OFF();
 			SM = Waiting_for_Start;
-			MS_Count10 = MS_Time + SWITCH_DB_DLY;	
+				
 			Start_DB = 0;	// reset the start switch history
 		} else
 		{
@@ -366,12 +369,12 @@ ISR(ADC_vect)
 	if(ADMUX == ADC_PILOT_CUR)
 	{
 		PilotCurrent = ADC;
-		ADMUX = ADC_TEMP1;
+		ADMUX = ADC_TORC_VOLT;
 //		ADCSRA |= _BV(ADSC);	// Start Conversion
 		FLAGS |= _BV(ADC_DONE);	// set the ADC_DONE flag in FLAGS
 		// toggle a test point
 		TOGGLE_A(TP_8);
-	} else if(ADMUX == ADC_TEMP1)
+	} else if(ADMUX == ADC_TORC_VOLT)
 	{
 		TorchVoltage = ADC;
 		ADMUX = ADC_HALL_CUR;
@@ -387,7 +390,7 @@ ISR(ADC_vect)
 ISR(TIMER0_OVF_vect , ISR_NAKED)
 {
 	asm volatile("push r24"::);		// can't believe I forgot this the first time around...
-  	PORTA |= _BV(TP_7);	// set the pin
+  	PORTA |= _BV(TP_9);	// set the pin
 	TCNT0H = (uint8_t) (T0_RELOAD >> 8);
 	TCNT0L = (uint8_t) (T0_RELOAD);
 	SET_FLAGS(TIMER0_DONE);
@@ -397,7 +400,7 @@ ISR(TIMER0_OVF_vect , ISR_NAKED)
 
 ISR(TIMER0_COMPA_vect, ISR_NAKED)
 {
-	PORTA &= ~(_BV(TP_7));	// clear the pin
+	PORTA &= ~(_BV(TP_9));	// clear the pin
 	reti();
 }
 

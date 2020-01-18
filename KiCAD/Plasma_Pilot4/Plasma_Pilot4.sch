@@ -34,7 +34,7 @@ L Plasma_Pilot4-rescue:BSS138-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue Q2
 U 1 1 56A547A8
 P 7500 5200
 F 0 "Q2" H 7300 5400 50  0000 L CNN
-F 1 "BSS138" H 7150 5300 50  0000 L CNN
+F 1 "BSS131" H 7150 5300 50  0000 L CNN
 F 2 "t_sot:sot-23" H 7700 5125 50  0001 L CIN
 F 3 "" H 7500 5200 50  0000 L CNN
 	1    7500 5200
@@ -67,7 +67,7 @@ L Plasma_Pilot4-rescue:C-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue C7
 U 1 1 56A565E5
 P 10150 6700
 F 0 "C7" H 10300 6750 50  0000 L CNN
-F 1 "0.1uF" H 10300 6650 50  0000 L CNN
+F 1 "1000pF" H 10300 6650 50  0000 L CNN
 F 2 "t_passive_smd:cap_0805" H 10188 6550 50  0001 C CNN
 F 3 "" H 10150 6700 50  0000 C CNN
 	1    10150 6700
@@ -118,7 +118,7 @@ L Plasma_Pilot4-rescue:C-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue C10
 U 1 1 56A59B2E
 P 13050 6350
 F 0 "C10" H 13200 6400 50  0000 L CNN
-F 1 "0.1uF" H 13200 6300 50  0000 L CNN
+F 1 "0.022uF" H 13200 6300 50  0000 L CNN
 F 2 "t_passive_thd:Cap_Rad_13x6mm" H 13088 6200 50  0001 C CNN
 F 3 "" H 13050 6350 50  0000 C CNN
 	1    13050 6350
@@ -509,12 +509,10 @@ Wire Wire Line
 	11600 6700 11500 6700
 Wire Wire Line
 	11500 6700 11500 6350
-Connection ~ 11500 6350
 Wire Wire Line
 	11600 6800 11500 6800
 Wire Wire Line
 	11500 6800 11500 7050
-Connection ~ 11500 7050
 $Comp
 L Plasma_Pilot4-rescue:TEST_POINT-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue TP2
 U 1 1 56A6B103
@@ -550,16 +548,14 @@ F 3 "" H 12100 6550 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	12100 6400 12100 6350
-Connection ~ 12100 6350
 Wire Wire Line
 	12100 7000 12100 7050
-Connection ~ 12100 7050
 Text Label 4300 6200 2    60   ~ 0
 START
-Text Notes 5000 8550 2    60   ~ 0
+Text Notes 1650 8400 0    60   ~ 0
 CT520 - MODE Connects to the Plasma/Tig switch \nPlasma side (Black wire). Should be +24V when\nin Plasma mode, Open otherwise (needs pull down)
-Text Notes 3050 6950 2    60   ~ 0
-CT520 - START Connects Trigger/Foot Pedal switch\nDon't connect to the +24V side of the switch! \n(Con 11 Red?) Open when not in use, +24V\nwhen trigger is pressed
+Text Notes 800  7500 0    60   ~ 0
+CT520 - START Connects Trigger/Foot Pedal switch\nDon't connect to the +24V side of the switch! \n(Con 11 Red?) \nAbout 10V when switch is open , \n+24V when trigger is pressed\n\nCT6000 no voltage when open, +24V when \nTrigger Pressed (Red Wire)
 $Comp
 L Plasma_Pilot4-rescue:GND-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue #PWR020
 U 1 1 56A74B1E
@@ -578,7 +574,7 @@ Wire Wire Line
 Text Notes 10050 8950 2    60   ~ 0
 CT520 - LIMIT Connects to the current POT \ncenter tap, after the Machine/Pedal switch\nis OK too. This should limit the output \ncurrent to about 12A when activated
 Text Notes 6200 5150 0    60   ~ 0
-200 KHz 1.7us \nPulse width
+275 KHz 1.0us \nPulse width
 Wire Wire Line
 	10150 7050 11200 7050
 Wire Wire Line
@@ -615,10 +611,6 @@ Wire Wire Line
 	8050 3250 8600 3250
 Wire Wire Line
 	11550 3250 11550 3300
-Wire Wire Line
-	11500 6350 12100 6350
-Wire Wire Line
-	11500 7050 12100 7050
 Wire Wire Line
 	12100 6350 12250 6350
 Wire Wire Line
@@ -693,38 +685,18 @@ F 3 "" H 14400 4250 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Plasma_Pilot4-rescue:Rx-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue R19
-U 1 1 5DD35E59
-P 13150 3900
-F 0 "R19" V 13350 3950 50  0000 C CNN
-F 1 "1000" V 13250 3950 50  0000 C CNN
-F 2 "t_passive_smd:res_0805" H 13150 3900 60  0001 C CNN
-F 3 "" H 13150 3900 60  0000 C CNN
-	1    13150 3900
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	13400 3900 13700 3900
-Wire Wire Line
-	13400 3400 13700 3400
-Wire Wire Line
-	13700 3400 13700 3900
-Connection ~ 13700 3900
-Wire Wire Line
-	13700 3900 14100 3900
-$Comp
 L Plasma_Pilot4-rescue:GND-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue #PWR024
 U 1 1 5DD38153
-P 13000 3500
-F 0 "#PWR024" H 13000 3500 30  0001 C CNN
-F 1 "GND" H 13000 3430 30  0001 C CNN
-F 2 "" H 13000 3500 60  0000 C CNN
-F 3 "" H 13000 3500 60  0000 C CNN
-	1    13000 3500
+P 13100 4400
+F 0 "#PWR024" H 13100 4400 30  0001 C CNN
+F 1 "GND" H 13100 4330 30  0001 C CNN
+F 2 "" H 13100 4400 60  0000 C CNN
+F 3 "" H 13100 4400 60  0000 C CNN
+	1    13100 4400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	13000 3400 13000 3500
+	13100 4300 13100 4400
 Text Notes 11850 3800 0    50   ~ 0
 Connection to Welder GND
 Wire Wire Line
@@ -812,22 +784,11 @@ Wire Wire Line
 Wire Wire Line
 	3750 4750 4750 4750
 $Comp
-L t_Devices:Res6 R21
-U 1 1 5DD83B05
-P 14000 3400
-F 0 "R21" V 13783 3400 50  0000 C CNN
-F 1 "10K" V 13874 3400 50  0000 C CNN
-F 2 "t_passive_smd:res_0603" H 14080 3309 60  0001 L CNN
-F 3 "" H 14000 3410 60  0000 C CNN
-	1    14000 3400
-	0    1    1    0   
-$EndComp
-$Comp
 L t_Devices:Res6 R13
 U 1 1 5DD8C86A
 P 15250 4000
 F 0 "R13" V 15033 4000 50  0000 C CNN
-F 1 "220" V 15124 4000 50  0000 C CNN
+F 1 "1.0K" V 15124 4000 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 15330 3909 60  0001 L CNN
 F 3 "" H 15250 4010 60  0000 C CNN
 	1    15250 4000
@@ -835,35 +796,28 @@ F 3 "" H 15250 4010 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	15400 4000 15600 4000
-Wire Wire Line
-	13850 3400 13700 3400
-Connection ~ 13700 3400
-Wire Wire Line
-	13100 3400 13000 3400
 $Comp
 L t_Devices:Res6 R20
 U 1 1 5DD8F297
-P 13250 3400
-F 0 "R20" V 13033 3400 50  0000 C CNN
-F 1 "10K" V 13124 3400 50  0000 C CNN
-F 2 "t_passive_smd:res_0603" H 13330 3309 60  0001 L CNN
-F 3 "" H 13250 3410 60  0000 C CNN
-	1    13250 3400
-	0    1    1    0   
+P 13100 4150
+F 0 "R20" H 13020 4104 50  0000 R CNN
+F 1 "100" H 13020 4195 50  0000 R CNN
+F 2 "t_passive_smd:res_0805" H 13180 4059 60  0001 L CNN
+F 3 "" H 13100 4160 60  0000 C CNN
+	1    13100 4150
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	12550 5250 12550 5150
 Connection ~ 12550 5150
 Wire Wire Line
 	12550 6100 12550 6150
-Wire Wire Line
-	12550 3900 12900 3900
 $Comp
 L t_Devices:Res6 R11
 U 1 1 5DD97FDB
 P 13700 4750
 F 0 "R11" V 13483 4750 50  0000 C CNN
-F 1 "Res6" V 13574 4750 50  0000 C CNN
+F 1 "6.8K" V 13574 4750 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 13780 4659 60  0001 L CNN
 F 3 "" H 13700 4760 60  0000 C CNN
 	1    13700 4750
@@ -874,7 +828,7 @@ L t_Devices:Res6 R12
 U 1 1 5DD99932
 P 14300 4750
 F 0 "R12" V 14083 4750 50  0000 C CNN
-F 1 "Res6" V 14174 4750 50  0000 C CNN
+F 1 "6.8K" V 14174 4750 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 14380 4659 60  0001 L CNN
 F 3 "" H 14300 4760 60  0000 C CNN
 	1    14300 4750
@@ -882,13 +836,6 @@ F 3 "" H 14300 4760 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	14450 4750 14850 4750
-Wire Wire Line
-	14150 3400 14300 3400
-Connection ~ 14300 3400
-Wire Wire Line
-	14300 3300 14300 3400
-Wire Wire Line
-	14300 3700 14300 3400
 Wire Wire Line
 	12550 6100 12300 6100
 Wire Wire Line
@@ -1062,7 +1009,7 @@ L Plasma_Pilot4-rescue:BSS138-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue Q4
 U 1 1 5DD4B335
 P 8000 5200
 F 0 "Q4" H 8250 5350 50  0000 L CNN
-F 1 "BSS138" H 8250 5250 50  0000 L CNN
+F 1 "BSS131" H 8250 5250 50  0000 L CNN
 F 2 "t_sot:sot-23" H 8200 5125 50  0001 L CIN
 F 3 "" H 8000 5200 50  0000 L CNN
 	1    8000 5200
@@ -1136,7 +1083,7 @@ F 1 "BAV3004W" H 9650 4565 40  0000 C CNN
 F 2 "Diode_SMD:D_SOD-123F" H 9650 4581 60  0001 C CNN
 F 3 "http://www.diodes.com/_files/datasheets/ds30371.pdf" H 9650 4581 60  0001 C CNN
 	1    9650 4450
-	1    0    0    -1  
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	10150 4450 9800 4450
@@ -1426,7 +1373,7 @@ L t_Devices:Res6 R24
 U 1 1 5DDAA32C
 P 12100 2400
 F 0 "R24" V 11883 2400 50  0000 C CNN
-F 1 "Res6" V 11974 2400 50  0000 C CNN
+F 1 "50K" V 11974 2400 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 12180 2309 60  0001 L CNN
 F 3 "" H 12100 2410 60  0000 C CNN
 	1    12100 2400
@@ -1437,7 +1384,7 @@ L t_Devices:Res6 R25
 U 1 1 5DDAC7D5
 P 12900 2400
 F 0 "R25" V 12683 2400 50  0000 C CNN
-F 1 "Res6" V 12774 2400 50  0000 C CNN
+F 1 "10K" V 12774 2400 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 12980 2309 60  0001 L CNN
 F 3 "" H 12900 2410 60  0000 C CNN
 	1    12900 2400
@@ -1461,7 +1408,7 @@ L t_Devices:Res6 R26
 U 1 1 5DDB0AC4
 P 13450 1800
 F 0 "R26" V 13233 1800 50  0000 C CNN
-F 1 "Res6" V 13324 1800 50  0000 C CNN
+F 1 "1.0K" V 13324 1800 50  0000 C CNN
 F 2 "t_passive_smd:res_0603" H 13530 1709 60  0001 L CNN
 F 3 "" H 13450 1810 60  0000 C CNN
 	1    13450 1800
@@ -1500,28 +1447,17 @@ Wire Wire Line
 Wire Wire Line
 	12250 2400 12400 2400
 Connection ~ 12400 2400
-$Comp
-L t_Devices:Res6 R23
-U 1 1 5DDB882D
-P 11600 2400
-F 0 "R23" V 11383 2400 50  0000 C CNN
-F 1 "Res6" V 11474 2400 50  0000 C CNN
-F 2 "t_passive_smd:res_1206" H 11680 2309 60  0001 L CNN
-F 3 "" H 11600 2410 60  0000 C CNN
-	1    11600 2400
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	11950 2400 11850 2400
 Wire Wire Line
-	11850 2150 11850 2400
+	11850 2050 11850 2400
 Connection ~ 11850 2400
 Wire Wire Line
 	11850 2400 11750 2400
 Wire Wire Line
 	12200 1700 11850 1700
 Wire Wire Line
-	11850 1700 11850 1950
+	11850 1700 11850 1850
 Connection ~ 12200 1700
 $Comp
 L Plasma_Pilot4-rescue:GND-Plasma_Pilot4-rescue-Plasma_Pilot4-rescue #PWR034
@@ -1603,7 +1539,7 @@ Wire Wire Line
 	8400 2200 8400 2050
 Wire Wire Line
 	6200 2300 6200 4250
-Text Notes 8850 1950 0    50   ~ 0
+Text Notes 8650 2000 0    50   ~ 0
 Main Current - Hall Effect Sensor\n
 $Comp
 L t_Devices:C_small C15
@@ -1776,17 +1712,6 @@ F 3 "" H 7600 5750 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L t_Coilcraft:EP10_GDT T1
-U 1 1 5DDF1AE2
-P 8950 4550
-F 0 "T1" H 8950 4961 60  0000 C CNN
-F 1 "EP10_GDT" H 8950 4854 60  0000 C CNN
-F 2 "t_coilcraft:EP10_SMT" H 8950 4747 60  0001 C CNN
-F 3 "" H 8950 4800 60  0000 C CNN
-	1    8950 4550
-	1    0    0    -1  
-$EndComp
-$Comp
 L t_Devices:MOV Z1
 U 1 1 5DDF9B21
 P 13550 6400
@@ -1828,12 +1753,12 @@ $EndComp
 $Comp
 L t_Devices:C_small C17
 U 1 1 5DDB96D4
-P 11850 2050
-F 0 "C17" H 11938 2096 50  0000 L CNN
-F 1 "0.1uF" H 11938 2005 50  0000 L CNN
-F 2 "t_passive_smd:cap_0603" H 11888 1900 50  0001 C CNN
-F 3 "" H 11850 2050 50  0001 C CNN
-	1    11850 2050
+P 11850 1950
+F 0 "C17" H 11938 1996 50  0000 L CNN
+F 1 "0.1uF" H 11938 1905 50  0000 L CNN
+F 2 "t_passive_smd:cap_0603" H 11888 1800 50  0001 C CNN
+F 3 "" H 11850 1950 50  0001 C CNN
+	1    11850 1950
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1850,7 +1775,7 @@ $EndComp
 Wire Wire Line
 	5900 1400 5900 1900
 Text Notes 12400 5600 0    70   ~ 0
-0.2 Ohm Sense\nResistor goes here
+0.1 Ohm Sense\nResistor goes here
 $Comp
 L Plasma_Pilot4-rescue:Q_NPN_BEC-device-Plasma_Pilot4-rescue Q5
 U 1 1 5DD7F9C6
@@ -1996,4 +1921,60 @@ Wire Wire Line
 Wire Wire Line
 	3800 6950 3800 6550
 Connection ~ 3800 6550
+$Comp
+L t_Coilcraft:EP10_GDT_2 T?
+U 1 1 5E02FDE9
+P 8950 4550
+F 0 "T?" H 8950 4855 60  0000 C CNN
+F 1 "EP10_GDT_2" H 8950 4748 60  0000 C CNN
+F 2 "t_coilcraft:EP10_SMT" H 8950 4747 60  0001 C CNN
+F 3 "" H 8950 4800 60  0000 C CNN
+	1    8950 4550
+	1    0    0    -1  
+$EndComp
+Text Notes 11300 7150 0    50   ~ 0
+Gate
+Text Notes 11250 6300 0    50   ~ 0
+Source
+Text Notes 8700 4800 0    50   ~ 0
+36:24
+Text Notes 8700 5000 0    30   ~ 0
+Primary L 250uH\nGluing with JB Weld \ncauses slight gap
+Wire Wire Line
+	14300 3300 14300 3700
+Wire Wire Line
+	13850 3900 14100 3900
+Wire Wire Line
+	12550 3900 13100 3900
+$Comp
+L t_Devices:Res6 R19
+U 1 1 5E03A264
+P 13700 3900
+F 0 "R19" V 13483 3900 50  0000 C CNN
+F 1 "1.0K" V 13574 3900 50  0000 C CNN
+F 2 "t_passive_smd:res_0603" H 13780 3809 60  0001 L CNN
+F 3 "" H 13700 3910 60  0000 C CNN
+	1    13700 3900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	13100 3900 13100 4000
+Connection ~ 13100 3900
+Wire Wire Line
+	13100 3900 13550 3900
+$Comp
+L t_Devices:Res6 R23
+U 1 1 5DDB882D
+P 11600 2400
+F 0 "R23" V 11383 2400 50  0000 C CNN
+F 1 "392K" V 11474 2400 50  0000 C CNN
+F 2 "t_passive_smd:res_1206" H 11680 2309 60  0001 L CNN
+F 3 "" H 11600 2410 60  0000 C CNN
+	1    11600 2400
+	0    1    1    0   
+$EndComp
+Text Notes 6400 7750 0    50   ~ 0
+R17:\n1.0K on CT6000\n15K on CT520D
+Text Notes 10200 1550 0    50   ~ 0
+CT6000 Open Circuit Voltage -280V\nNeed another 100K in series
 $EndSCHEMATC
